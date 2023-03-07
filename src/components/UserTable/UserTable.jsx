@@ -4,18 +4,25 @@ import { useFetching } from "../../hooks/useFetching";
 import UserItem from "../UserItem/UserItem";
 import Api from "../../API/Api";
 import Loader from "../Loader/Loader";
+import Pagination from "../Pagination/Pagination";
 
 const UserTable = () => {
   const [users, setUsers] = React.useState([]);
+  const [limit, setLimit] = React.useState(5);
+  const [page, setPage] = React.useState(1);
 
   const [fetchUsers, isUsersLoading, userError] = useFetching(async () => {
-    const response = await Api.getAllUsers();
+    const response = await Api.getAllUsers(limit, page);
     setUsers(response.data);
   });
 
+  const changePage = (page) => {
+    setPage(page);
+  };
+
   React.useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [page]);
 
   return (
     <>
@@ -44,6 +51,7 @@ const UserTable = () => {
           </div>
         </div>
       )}
+      <Pagination changePage={changePage} totalPages={[1,2,3,4,5]} page={page} />
     </>
   );
 };
