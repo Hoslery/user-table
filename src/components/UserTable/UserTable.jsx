@@ -5,6 +5,7 @@ import UserItem from "../UserItem/UserItem";
 import Api from "../../API/Api";
 import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
+import { formatDate } from "../../utils/date/formatDate";
 
 const UserTable = () => {
   const [users, setUsers] = React.useState([]);
@@ -13,7 +14,7 @@ const UserTable = () => {
 
   const [fetchUsers, isUsersLoading, userError] = useFetching(async () => {
     const response = await Api.getAllUsers(limit, page);
-    setUsers(response.data);
+    setUsers(formatDate(response.data));
   });
 
   const changePage = (page) => {
