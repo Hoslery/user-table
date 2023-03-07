@@ -21,6 +21,10 @@ const UserTable = () => {
     setPage(page);
   };
 
+  const removeUser = (_user) => {
+    setUsers(users.filter((user) => user.id !== _user.id));
+  };
+
   React.useEffect(() => {
     fetchUsers();
   }, [page]);
@@ -47,7 +51,7 @@ const UserTable = () => {
           </div>
           <div className="user-table__content">
             {users.map((user) => (
-              <UserItem key={user.id} user={user} />
+              <UserItem key={user.id} user={user} removeUser={removeUser} />
             ))}
           </div>
         </div>
