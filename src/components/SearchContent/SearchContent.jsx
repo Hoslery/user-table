@@ -9,6 +9,10 @@ const SearchContent = ({ searchValue, onChangeSearchValue }) => {
     onChangeActiveCategory,
   } = React.useContext(FilterContext);
 
+  /**
+   * Функция, отвечающая за нажатие на кнопку 'Очистить фильтр'
+   * @param e - event
+   */
   const reset = (e) => {
     e.preventDefault();
     onChangeSearchValue("");
@@ -16,6 +20,10 @@ const SearchContent = ({ searchValue, onChangeSearchValue }) => {
     onChangeActiveCategory(-1);
   };
 
+  /**
+   * Функция, отвечающая за ввод в поле поиска
+   * @param e - event
+   */
   const changeSearchInfo = (e) => {
     if (e.target.value) {
       onChangeHideFilter(false);

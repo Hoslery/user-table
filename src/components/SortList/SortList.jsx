@@ -5,8 +5,15 @@ import { sortByField } from "../../utils/sort/sortByField";
 import SortItem from "../SortItem/SortItem";
 
 const SortList = ({ users, setUsers }) => {
-  const { activeCategory, onChangeActiveCategory } = React.useContext(FilterContext);
+  const { activeCategory, onChangeActiveCategory } =
+    React.useContext(FilterContext);
 
+  /**
+   * Функция, отвечающая за включение/смену сортировки
+   * @param id - идентификатор вида сортировки
+   * @param sortValue - поле, по которому ведется сортировка
+   * @param clickNumber - переменная, отвечающая за направление сортировки
+   */
   const changeSort = (id, sortValue, clickNumber) => {
     onChangeActiveCategory(id);
     setUsers(

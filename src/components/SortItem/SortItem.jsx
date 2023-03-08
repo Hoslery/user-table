@@ -6,6 +6,9 @@ const SortItem = ({item, activeCategory, changeSort}) => {
 
   const clickNumber = React.useRef(1)
 
+  /**
+   * Функция, отвечающая за нажатие на сортировку и количество нажатий на нее
+   */
   const clickSort = () => {
     onChangeHideFilter(false)
     if (activeCategory !== item.id) {

@@ -1,3 +1,6 @@
 import { createContext } from "react";
 
-export const FilterContext = createContext(null)
+/**
+ * Контекст для передачи props
+ */
+export const FilterContext = createContext(null);

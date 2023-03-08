@@ -21,6 +21,10 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
     setUsersWithoutChanges(response.data);
   });
 
+  /**
+   * Функция, отвечающая за смену страницы
+   * @param page
+   */
   const changePage = (page) => {
     setPage(page);
     onChangeSearchValue("");
@@ -28,10 +32,17 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
     onChangeActiveCategory(-1);
   };
 
+  /**
+   * Функция, отвечающая за удаление пользователя из таблицы
+   * @param _user
+   */
   const removeUser = (_user) => {
     setUsers(users.filter((user) => user.id !== _user.id));
   };
 
+  /**
+   * Обновление пользователей при нажатии на кнопку 'очистить фильтр'
+   */
   React.useEffect(() => {
     if (hideFilter && users.length > 0) {
       const usersId = users.map((user) => {
@@ -45,6 +56,9 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
     }
   }, [hideFilter]);
 
+  /**
+   * Получение данных из API при монтировании компонента и при обновлении страницы
+   */
   React.useEffect(() => {
     fetchUsers();
   }, [page]);
@@ -60,7 +74,7 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
       )}
       {isUsersLoading ? (
         <Loader />
-      ) : (
+      ) : users.length ? (
         <div className="user-table">
           <div className="user-table__header header">
             <div className="header__name">Имя пользователя</div>
@@ -84,6 +98,8 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
               ))}
           </div>
         </div>
+      ) : (
+        <h1 className="notification">{`К сожалению, пользователей не осталось :(`}</h1>
       )}
       <Pagination
         changePage={changePage}
