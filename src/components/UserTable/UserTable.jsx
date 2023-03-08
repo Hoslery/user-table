@@ -5,7 +5,6 @@ import UserItem from "../UserItem/UserItem";
 import Api from "../../API/Api";
 import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
-import { formatDate } from "../../utils/date/formatDate";
 import { FilterContext } from "../../context/context";
 
 const UserTable = ({ searchValue, onChangeSearchValue }) => {
@@ -18,9 +17,8 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
 
   const [fetchUsers, isUsersLoading, userError] = useFetching(async () => {
     const response = await Api.getAllUsers(limit, page);
-    const data = formatDate(response.data);
-    setUsers(data);
-    setUsersWithoutChanges(data);
+    setUsers(response.data);
+    setUsersWithoutChanges(response.data);
   });
 
   const changePage = (page) => {
