@@ -7,7 +7,7 @@ import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
 import { formatDate } from "../../utils/date/formatDate";
 
-const UserTable = () => {
+const UserTable = ({ searchValue, onChangeSearchValue }) => {
   const [users, setUsers] = React.useState([]);
   const [limit, setLimit] = React.useState(5);
   const [page, setPage] = React.useState(1);
@@ -19,6 +19,7 @@ const UserTable = () => {
 
   const changePage = (page) => {
     setPage(page);
+    onChangeSearchValue("")
   };
 
   const removeUser = (_user) => {
@@ -50,13 +51,26 @@ const UserTable = () => {
             <div className="header__delete"></div>
           </div>
           <div className="user-table__content">
-            {users.map((user) => (
-              <UserItem key={user.id} user={user} removeUser={removeUser} />
-            ))}
+            {users
+              .filter((user) => {
+                return (
+                  user.username
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase()) ||
+                  user.email.toLowerCase().includes(searchValue.toLowerCase())
+                );
+              })
+              .map((user) => (
+                <UserItem key={user.id} user={user} removeUser={removeUser} />
+              ))}
           </div>
         </div>
       )}
-      <Pagination changePage={changePage} totalPages={[1,2,3,4,5]} page={page} />
+      <Pagination
+        changePage={changePage}
+        totalPages={[1, 2, 3, 4, 5]}
+        page={page}
+      />
     </>
   );
 };

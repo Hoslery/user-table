@@ -1,9 +1,16 @@
 import React from "react";
 
-const SearchContent = () => {
+const SearchContent = ({ searchValue, onChangeSearchValue }) => {
+
+  const changeSearchInfo = (e) => {
+    onChangeSearchValue(e.target.value)
+  }
+
   return (
     <div className="search">
       <input
+        value={searchValue}
+        onChange={changeSearchInfo}
         className="search__input"
         type="search"
         placeholder="Поиск по имени или e-mail"
