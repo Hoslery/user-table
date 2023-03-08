@@ -1,10 +1,13 @@
 import React from 'react'
+import { FilterContext } from '../../context/context';
 
 const SortItem = ({item, activeCategory, changeSort}) => {
+  const { onChangeHideFilter } = React.useContext(FilterContext);
 
   const clickNumber = React.useRef(1)
 
   const clickSort = () => {
+    onChangeHideFilter(false)
     if (activeCategory !== item.id) {
       clickNumber.current = 1
     }

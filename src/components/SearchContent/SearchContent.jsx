@@ -1,10 +1,29 @@
 import React from "react";
+import { FilterContext } from "../../context/context";
 
 const SearchContent = ({ searchValue, onChangeSearchValue }) => {
+  const {
+    hideFilter,
+    onChangeHideFilter,
+    activeCategory,
+    onChangeActiveCategory,
+  } = React.useContext(FilterContext);
+
+  const reset = (e) => {
+    e.preventDefault();
+    onChangeSearchValue("");
+    onChangeHideFilter(true);
+    onChangeActiveCategory(-1);
+  };
 
   const changeSearchInfo = (e) => {
-    onChangeSearchValue(e.target.value)
-  }
+    if (e.target.value) {
+      onChangeHideFilter(false);
+    } else if (activeCategory === -1) {
+      onChangeHideFilter(true);
+    }
+    onChangeSearchValue(e.target.value);
+  };
 
   return (
     <div className="search">
@@ -16,7 +35,14 @@ const SearchContent = ({ searchValue, onChangeSearchValue }) => {
         placeholder="Поиск по имени или e-mail"
       />
       <button className="search__btn"></button>
-      <button className="search__filter">Очистить фильтр</button>
+      <button
+        onClick={reset}
+        className={`search__filter ${
+          hideFilter ? `search__filter_hidden` : ``
+        }`}
+      >
+        Очистить фильтр
+      </button>
     </div>
   );
 };

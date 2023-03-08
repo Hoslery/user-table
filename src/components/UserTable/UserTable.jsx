@@ -6,25 +6,46 @@ import Api from "../../API/Api";
 import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
 import { formatDate } from "../../utils/date/formatDate";
+import { FilterContext } from "../../context/context";
 
 const UserTable = ({ searchValue, onChangeSearchValue }) => {
   const [users, setUsers] = React.useState([]);
   const [limit, setLimit] = React.useState(5);
   const [page, setPage] = React.useState(1);
+  const { hideFilter, onChangeHideFilter, onChangeActiveCategory } =
+    React.useContext(FilterContext);
+  const [usersWithoutChanges, setUsersWithoutChanges] = React.useState([]);
 
   const [fetchUsers, isUsersLoading, userError] = useFetching(async () => {
     const response = await Api.getAllUsers(limit, page);
-    setUsers(formatDate(response.data));
+    const data = formatDate(response.data);
+    setUsers(data);
+    setUsersWithoutChanges(data);
   });
 
   const changePage = (page) => {
     setPage(page);
-    onChangeSearchValue("")
+    onChangeSearchValue("");
+    onChangeHideFilter(true);
+    onChangeActiveCategory(-1);
   };
 
   const removeUser = (_user) => {
     setUsers(users.filter((user) => user.id !== _user.id));
   };
+
+  React.useEffect(() => {
+    if (hideFilter && users.length > 0) {
+      const usersId = users.map((user) => {
+        return user.id;
+      });
+      setUsers([
+        ...usersWithoutChanges.filter((user) => {
+          return usersId.includes(user.id);
+        }),
+      ]);
+    }
+  }, [hideFilter]);
 
   React.useEffect(() => {
     fetchUsers();
@@ -34,7 +55,7 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
     <>
       <div className="sort">
         <span className="sort__title">Сортировка:</span>
-        <SortList users={users} setUsers={setUsers}/>
+        <SortList users={users} setUsers={setUsers} />
       </div>
       {userError && (
         <h1 className="error">{`Извините, произошла ошибка :(`}</h1>
