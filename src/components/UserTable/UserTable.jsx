@@ -34,7 +34,7 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
     <>
       <div className="sort">
         <span className="sort__title">Сортировка:</span>
-        <SortList />
+        <SortList users={users} setUsers={setUsers}/>
       </div>
       {userError && (
         <h1 className="error">{`Извините, произошла ошибка :(`}</h1>

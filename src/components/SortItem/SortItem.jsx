@@ -1,8 +1,23 @@
 import React from 'react'
 
-const SortItem = ({item}) => {
+const SortItem = ({item, activeCategory, changeSort}) => {
+
+  const clickNumber = React.useRef(1)
+
+  const clickSort = () => {
+    if (activeCategory !== item.id) {
+      clickNumber.current = 1
+    }
+    changeSort(clickNumber.current)
+    if (clickNumber.current === 1){
+      clickNumber.current = 2
+    } else {
+      clickNumber.current = 1
+    }
+  }
+
   return (
-    <li className={`sort__item`}>{item.text}</li>
+    <li onClick={clickSort} className={`sort__item ${activeCategory === item.id ? 'sort__item_active' : ''}`}>{item.text}</li>
   )
 }
 
