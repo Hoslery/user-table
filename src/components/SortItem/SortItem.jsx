@@ -1,8 +1,9 @@
 import React from 'react'
-import { FilterContext } from '../../context/context';
+import { useDispatch } from "react-redux";
+import { setHideFilterAction } from '../../store/reducers/filterReducer';
 
 const SortItem = ({item, activeCategory, changeSort}) => {
-  const { onChangeHideFilter } = React.useContext(FilterContext);
+  const dispatch = useDispatch()
 
   const clickNumber = React.useRef(1)
 
@@ -10,7 +11,7 @@ const SortItem = ({item, activeCategory, changeSort}) => {
    * Функция, отвечающая за нажатие на сортировку и количество нажатий на нее
    */
   const clickSort = () => {
-    onChangeHideFilter(false)
+    dispatch(setHideFilterAction(false))
     if (activeCategory !== item.id) {
       clickNumber.current = 1
     }

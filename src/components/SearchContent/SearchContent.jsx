@@ -1,13 +1,11 @@
 import React from "react";
-import { FilterContext } from "../../context/context";
+import { useDispatch, useSelector } from "react-redux";
+import { setCategoryAction, setHideFilterAction } from "../../store/reducers/filterReducer";
 
 const SearchContent = ({ searchValue, onChangeSearchValue }) => {
-  const {
-    hideFilter,
-    onChangeHideFilter,
-    activeCategory,
-    onChangeActiveCategory,
-  } = React.useContext(FilterContext);
+  const dispatch = useDispatch()
+  const hideFilter = useSelector(state => state.filter.hideFilter)
+  const activeCategory = useSelector(state => state.filter.activeCategory)
 
   /**
    * Функция, отвечающая за нажатие на кнопку 'Очистить фильтр'
@@ -16,8 +14,8 @@ const SearchContent = ({ searchValue, onChangeSearchValue }) => {
   const reset = (e) => {
     e.preventDefault();
     onChangeSearchValue("");
-    onChangeHideFilter(true);
-    onChangeActiveCategory(-1);
+    dispatch(setHideFilterAction(true))
+    dispatch(setCategoryAction(-1))
   };
 
   /**
@@ -26,9 +24,9 @@ const SearchContent = ({ searchValue, onChangeSearchValue }) => {
    */
   const changeSearchInfo = (e) => {
     if (e.target.value) {
-      onChangeHideFilter(false);
+      dispatch(setHideFilterAction(false))
     } else if (activeCategory === -1) {
-      onChangeHideFilter(true);
+      dispatch(setHideFilterAction(true))
     }
     onChangeSearchValue(e.target.value);
   };

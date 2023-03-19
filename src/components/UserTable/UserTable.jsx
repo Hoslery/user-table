@@ -1,25 +1,21 @@
 import React from "react";
 import SortList from "../SortList/SortList";
-import { useFetching } from "../../hooks/useFetching";
 import UserItem from "../UserItem/UserItem";
-import Api from "../../API/Api";
 import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
-import { FilterContext } from "../../context/context";
+import { useDispatch, useSelector } from "react-redux";
+import { setCategoryAction, setHideFilterAction } from "../../store/reducers/filterReducer";
+import { fetchUsers } from "../../store/action-creators/users";
+import { getAllUsersAction, removeUserAction } from "../../store/reducers/userReducer";
 
 const UserTable = ({ searchValue, onChangeSearchValue }) => {
-  const [users, setUsers] = React.useState([]);
+  const dispatch = useDispatch()
+  const hideFilter = useSelector(state => state.filter.hideFilter)
+  const {users, isUsersLoading, userError} = useSelector(state => state.userReducer)
+
+  // eslint-disable-next-line no-unused-vars
   const [limit, setLimit] = React.useState(5);
   const [page, setPage] = React.useState(1);
-  const { hideFilter, onChangeHideFilter, onChangeActiveCategory } =
-    React.useContext(FilterContext);
-  const [usersWithoutChanges, setUsersWithoutChanges] = React.useState([]);
-
-  const [fetchUsers, isUsersLoading, userError] = useFetching(async () => {
-    const response = await Api.getAllUsers(limit, page);
-    setUsers(response.data);
-    setUsersWithoutChanges(response.data);
-  });
 
   /**
    * Функция, отвечающая за смену страницы
@@ -28,8 +24,8 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
   const changePage = (page) => {
     setPage(page);
     onChangeSearchValue("");
-    onChangeHideFilter(true);
-    onChangeActiveCategory(-1);
+    dispatch(setHideFilterAction(true))
+    dispatch(setCategoryAction(-1))
   };
 
   /**
@@ -37,7 +33,7 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
    * @param _user
    */
   const removeUser = (_user) => {
-    setUsers(users.filter((user) => user.id !== _user.id));
+    dispatch(removeUserAction(_user.id))
   };
 
   /**
@@ -48,11 +44,7 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
       const usersId = users.map((user) => {
         return user.id;
       });
-      setUsers([
-        ...usersWithoutChanges.filter((user) => {
-          return usersId.includes(user.id);
-        }),
-      ]);
+      dispatch(getAllUsersAction(usersId))
     }
   }, [hideFilter]);
 
@@ -60,18 +52,21 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
    * Получение данных из API при монтировании компонента и при обновлении страницы
    */
   React.useEffect(() => {
-    fetchUsers();
+    dispatch(fetchUsers(limit,page));
   }, [page]);
+
+  if(userError){
+    return (
+      <h1 className="error">{userError}</h1>
+    )
+  }
 
   return (
     <>
       <div className="sort">
         <span className="sort__title">Сортировка:</span>
-        <SortList users={users} setUsers={setUsers} />
+        <SortList/>
       </div>
-      {userError && (
-        <h1 className="error">{`Извините, произошла ошибка :(`}</h1>
-      )}
       {isUsersLoading ? (
         <Loader />
       ) : users.length ? (
