@@ -1,17 +1,23 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { setCategoryAction, setHideFilterAction } from "../../store/reducers/filterReducer";
 
-const SearchContent = ({ searchValue, onChangeSearchValue }) => {
+interface ISearchContentProps {
+  searchValue: string,
+  onChangeSearchValue: (str: string) => void
+}
+
+const SearchContent: React.FC<ISearchContentProps> = ({ searchValue, onChangeSearchValue }) => {
   const dispatch = useDispatch()
-  const hideFilter = useSelector(state => state.filter.hideFilter)
-  const activeCategory = useSelector(state => state.filter.activeCategory)
+  const hideFilter = useTypedSelector(state => state.filter.hideFilter)
+  const activeCategory = useTypedSelector(state => state.filter.activeCategory)
 
   /**
    * Функция, отвечающая за нажатие на кнопку 'Очистить фильтр'
    * @param e - event
    */
-  const reset = (e) => {
+  const reset = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     onChangeSearchValue("");
     dispatch(setHideFilterAction(true))
@@ -22,7 +28,7 @@ const SearchContent = ({ searchValue, onChangeSearchValue }) => {
    * Функция, отвечающая за ввод в поле поиска
    * @param e - event
    */
-  const changeSearchInfo = (e) => {
+  const changeSearchInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
       dispatch(setHideFilterAction(false))
     } else if (activeCategory === -1) {

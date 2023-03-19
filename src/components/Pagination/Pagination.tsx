@@ -1,6 +1,12 @@
 import React from 'react'
 
-const Pagination = ({ changePage, totalPages, page }) => {
+interface IPaginationProps {
+  changePage: (page: number) => void,
+  totalPages: number[],
+  page: number
+}
+
+const Pagination: React.FC<IPaginationProps> = ({ changePage, totalPages, page }) => {
   return (
     <ul className="page">
       {totalPages.map((p) => (

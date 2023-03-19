@@ -3,15 +3,22 @@ import SortList from "../SortList/SortList";
 import UserItem from "../UserItem/UserItem";
 import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setCategoryAction, setHideFilterAction } from "../../store/reducers/filterReducer";
 import { fetchUsers } from "../../store/action-creators/users";
 import { getAllUsersAction, removeUserAction } from "../../store/reducers/userReducer";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { IUser } from "../../types/types";
 
-const UserTable = ({ searchValue, onChangeSearchValue }) => {
-  const dispatch = useDispatch()
-  const hideFilter = useSelector(state => state.filter.hideFilter)
-  const {users, isUsersLoading, userError} = useSelector(state => state.userReducer)
+interface IUserTableProps {
+  searchValue: string,
+  onChangeSearchValue: (str: string) => void
+}
+
+const UserTable: React.FC<IUserTableProps> = ({ searchValue, onChangeSearchValue }) => {
+  const dispatch: any = useDispatch()
+  const hideFilter = useTypedSelector(state => state.filter.hideFilter)
+  const {users, isUsersLoading, userError} = useTypedSelector(state => state.userReducer)
 
   // eslint-disable-next-line no-unused-vars
   const [limit, setLimit] = React.useState(5);
@@ -21,7 +28,7 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
    * Функция, отвечающая за смену страницы
    * @param page
    */
-  const changePage = (page) => {
+  const changePage = (page: number) => {
     setPage(page);
     onChangeSearchValue("");
     dispatch(setHideFilterAction(true))
@@ -32,7 +39,7 @@ const UserTable = ({ searchValue, onChangeSearchValue }) => {
    * Функция, отвечающая за удаление пользователя из таблицы
    * @param _user
    */
-  const removeUser = (_user) => {
+  const removeUser = (_user: IUser) => {
     dispatch(removeUserAction(_user.id))
   };
 

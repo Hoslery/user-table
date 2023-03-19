@@ -1,8 +1,15 @@
 import React from 'react'
 import { useDispatch } from "react-redux";
 import { setHideFilterAction } from '../../store/reducers/filterReducer';
+import { ISort } from '../../types/types';
 
-const SortItem = ({item, activeCategory, changeSort}) => {
+interface ISortItemProps {
+  item: ISort,
+  activeCategory: number,
+  changeSort: (clickNumber: number) => void
+}
+
+const SortItem: React.FC<ISortItemProps> = ({item, activeCategory, changeSort}) => {
   const dispatch = useDispatch()
 
   const clickNumber = React.useRef(1)

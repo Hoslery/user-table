@@ -1,13 +1,14 @@
 import React from "react";
 import { sortItems } from "../../utils/constants";
 import SortItem from "../SortItem/SortItem";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setCategoryAction } from "../../store/reducers/filterReducer";
 import { sortUsersAction } from "../../store/reducers/userReducer";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
-const SortList = () => {
+const SortList: React.FC = () => {
   const dispatch = useDispatch()
-  const activeCategory = useSelector(state => state.filter.activeCategory)
+  const activeCategory = useTypedSelector(state => state.filter.activeCategory)
 
   /**
    * Функция, отвечающая за включение/смену сортировки
@@ -15,7 +16,7 @@ const SortList = () => {
    * @param sortValue - поле, по которому ведется сортировка
    * @param clickNumber - переменная, отвечающая за направление сортировки
    */
-  const changeSort = (id, sortValue, clickNumber) => {
+  const changeSort = (id: number, sortValue: string, clickNumber: number) => {
     dispatch(setCategoryAction(id));
     dispatch(sortUsersAction({clickNumber, sortValue}))
   };

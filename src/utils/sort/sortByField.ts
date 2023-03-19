@@ -1,3 +1,4 @@
+import { IUser } from "../../types/types";
 import { dateToNumber } from "../date/dateToNumber";
 
 /**
@@ -6,8 +7,12 @@ import { dateToNumber } from "../date/dateToNumber";
  * @param b
  * @param sortValue - поле, по которому ведется сортировка
  */
-export const sortByField = (a, b, sortValue) => {
+export const sortByField = (
+  a: IUser,
+  b: IUser,
+  sortValue: string
+) => {
   if (sortValue === "registration_date") {
     return dateToNumber(a[sortValue]) - dateToNumber(b[sortValue]);
-  } else return a[sortValue] - b[sortValue];
+  } else return a["rating"] - b["rating"];
 };

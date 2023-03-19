@@ -1,35 +1,29 @@
+import { IGetAllUsersAction, IRemoveUserAction, ISortUsersAction, IUserState, UserAction, UserActionTypes } from "../../types/types"
 import { sortByField } from "../../utils/sort/sortByField"
 
-const FETCH_USERS = "FETCH_USERS"
-const FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS"
-const FETCH_USERS_ERROR = "FETCH_USERS_ERROR"
-const REMOVE_USER = "REMOVE_USER"
-const GET_ALL_USERS = "GET_ALL_USERS"
-const SORT_USERS = "SORT_USERS"
-
-const initialState = {
+const initialState: IUserState = {
   users: [],
   usersWithoutChanges: [],
   isUsersLoading: false,
   userError: null
 }
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: UserAction): IUserState => {
   switch (action.type) {
-    case FETCH_USERS:
+    case UserActionTypes.FETCH_USERS:
       return {isUsersLoading: true, userError: null, users: [], usersWithoutChanges: []}
-    case FETCH_USERS_SUCCESS:
+    case UserActionTypes.FETCH_USERS_SUCCESS:
       return {isUsersLoading: false, userError: null, users: action.payload, usersWithoutChanges: action.payload}
-    case FETCH_USERS_ERROR:
+    case UserActionTypes.FETCH_USERS_ERROR:
       return {isUsersLoading: false, userError: action.payload, users: [], usersWithoutChanges: []}
-    case REMOVE_USER:
+    case UserActionTypes.REMOVE_USER:
       return {...state , users: state.users.filter((user) => user.id !== action.payload)}
-    case GET_ALL_USERS:
+    case UserActionTypes.GET_ALL_USERS:
       return {...state , users: [...state.usersWithoutChanges.filter((user) => {
           return action.payload.includes(user.id);
         })
       ]}
-    case SORT_USERS:
+    case UserActionTypes.SORT_USERS:
       return {...state , users: [...state.users].sort((a, b) =>
         action.payload.clickNumber === 2
           ? sortByField(a, b, action.payload.sortValue)
@@ -40,6 +34,6 @@ export const userReducer = (state = initialState, action) => {
   }
 }
 
-export const removeUserAction = (payload) => ({type: REMOVE_USER, payload})
-export const getAllUsersAction = (payload) => ({type: GET_ALL_USERS, payload})
-export const sortUsersAction = (payload) => ({type: SORT_USERS, payload})
+export const removeUserAction = (payload: number): IRemoveUserAction => ({type: UserActionTypes.REMOVE_USER, payload})
+export const getAllUsersAction = (payload: number[]): IGetAllUsersAction => ({type: UserActionTypes.GET_ALL_USERS, payload})
+export const sortUsersAction = (payload: {clickNumber: number, sortValue: string}): ISortUsersAction => ({type: UserActionTypes.SORT_USERS, payload})

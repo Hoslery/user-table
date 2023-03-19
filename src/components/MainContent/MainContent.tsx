@@ -4,7 +4,7 @@ import UserTable from "../UserTable/UserTable";
 import {Provider} from 'react-redux'
 import {store} from "../../store"
 
-const MainContent = () => {
+const MainContent: React.FC = () => {
   const [searchValue, setSearchValue] = React.useState("");
 
   return (

@@ -1,6 +1,13 @@
 import React from 'react'
+import { IUser } from '../../types/types'
 
-const ModalDelete = ({closeModal, removeUser, user}) => {
+interface IModalDeleteProps {
+  user: IUser,
+  removeUser: (_user: IUser) => void,
+  closeModal: () => void
+}
+
+const ModalDelete: React.FC<IModalDeleteProps> = ({closeModal, removeUser, user}) => {
   return (
     <div className="overlay">
       <div className="modal">

@@ -2,8 +2,14 @@ import React from "react";
 import cancel from "../../img/cancel.svg";
 import ModalDelete from "../ModalDelete/ModalDelete";
 import {formatDate} from "../../utils/date/formatDate"
+import { IUser } from "../../types/types";
 
-const UserItem = ({user, removeUser}) => {
+interface IUserItemProps {
+  user: IUser,
+  removeUser: (_user: IUser) => void
+}
+
+const UserItem: React.FC<IUserItemProps> = ({user, removeUser}) => {
   const [open, setOpen] = React.useState(false);
 
   return (

@@ -5,16 +5,16 @@ import React from "react";
  * обработкой ошибок и отслеживанием состояния загрузки данных.
  * @param callback 
  */
-export const useFetching = (callback) => {
+export const useFetching = (callback: (...agrs: any[]) => void) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState('');
 
-  const fetching = async (...args) => {
+  const fetching = async (...args: any[]) => {
       try {
           setIsLoading(true)
           await callback(...args)
       } catch (e) {
-          setError(e.message);
+          setError((e as Error).message);
       } finally {
           setIsLoading(false)
       }
