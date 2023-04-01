@@ -83,3 +83,14 @@ export interface ISetCategoryAction {
 }
 
 export type FilterAction = ISetHideFilterAction | ISetCategoryAction
+
+export interface IRoute {
+  path: string,
+  element: JSX.Element
+}
+
+export interface INavItem {
+  id: number,
+  text: string,
+  path: string
+}

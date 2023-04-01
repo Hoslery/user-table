@@ -1,15 +1,16 @@
 import React from "react";
-import MainContent from "./components/MainContent/MainContent";
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
+import AppRouter from "./router/AppRouter";
 import "./styles/App.css";
 
 function App() {
   return (
     <div className="App">
       <div className="wrapper">
-        <div className="container">
-          <h1 className="title">Список пользователей</h1>
-          <MainContent/>
-        </div>
+        <Header/>
+        <AppRouter/>
+        <Footer/>
       </div>
     </div>
   );
